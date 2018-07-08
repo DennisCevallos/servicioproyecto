@@ -56,7 +56,8 @@ namespace Servicio.Controllers.Api
             return new Response
             {
                 IsSuccess = true,
-                Message = Mensaje.Satisfactorio
+                Message = Mensaje.Satisfactorio,
+                Resultado = genero
             };
         }
 
@@ -86,7 +87,7 @@ namespace Servicio.Controllers.Api
             await _context.SaveChangesAsync();
             return new Response
             {
-                IsSuccess = false,
+                IsSuccess = true,
                 Message = Mensaje.RegistroEditado
             };
 
