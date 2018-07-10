@@ -142,8 +142,8 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            var genero = await _context.Genero.SingleOrDefaultAsync(m => m.IdGenero == id);
-            if (genero == null)
+            var respuesta = await _context.Genero.SingleOrDefaultAsync(m => m.IdGenero == id);
+            if (respuesta == null)
             {
                 return new Response
                 {
@@ -152,7 +152,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            _context.Genero.Remove(genero);
+            _context.Genero.Remove(respuesta);
             await _context.SaveChangesAsync();
             return new Response
             {
