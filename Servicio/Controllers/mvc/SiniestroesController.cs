@@ -10,23 +10,23 @@ using Entidades.Negocio;
 
 namespace Servicio.Controllers.mvc
 {
-    public class ItemMenusController : Controller
+    public class SiniestroesController : Controller
     {
         private readonly SegurosContext _context;
 
-        public ItemMenusController(SegurosContext context)
+        public SiniestroesController(SegurosContext context)
         {
             _context = context;
         }
 
-        // GET: ItemMenus
+        // GET: Siniestroes
         public async Task<IActionResult> Index()
         {
-            var segurosContext = _context.ItemMenu.Include(i => i.IdMenuNavigation).Include(i => i.IdPerfilNavigation);
+            var segurosContext = _context.Siniestro.Include(s => s.IdVehiculoNavigation);
             return View(await segurosContext.ToListAsync());
         }
 
-        // GET: ItemMenus/Details/5
+        // GET: Siniestroes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +34,42 @@ namespace Servicio.Controllers.mvc
                 return NotFound();
             }
 
-            var itemMenu = await _context.ItemMenu
-                .Include(i => i.IdMenuNavigation)
-                .Include(i => i.IdPerfilNavigation)
-                .SingleOrDefaultAsync(m => m.IdSubMenu == id);
-            if (itemMenu == null)
+            var siniestro = await _context.Siniestro
+                .Include(s => s.IdVehiculoNavigation)
+                .SingleOrDefaultAsync(m => m.IdSiniestro == id);
+            if (siniestro == null)
             {
                 return NotFound();
             }
 
-            return View(itemMenu);
+            return View(siniestro);
         }
 
-        // GET: ItemMenus/Create
+        // GET: Siniestroes/Create
         public IActionResult Create()
         {
-            ViewData["IdMenu"] = new SelectList(_context.Menu, "IdMenu", "IdMenu");
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "IdPerfil");
+            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculo, "IdVehiculo", "IdVehiculo");
             return View();
         }
 
-        // POST: ItemMenus/Create
+        // POST: Siniestroes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdSubMenu,IdPerfil,IdMenu,Estado")] ItemMenu itemMenu)
+        public async Task<IActionResult> Create([Bind("IdSiniestro,Fecha,CallePrincipal,CalleSecundaria,Referencia,IdVehiculo")] Siniestro siniestro)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(itemMenu);
+                _context.Add(siniestro);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdMenu"] = new SelectList(_context.Menu, "IdMenu", "Titulo", itemMenu.IdMenu);
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion", itemMenu.IdPerfil);
-            return View(itemMenu);
+            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculo, "IdVehiculo", "IdVehiculo", siniestro.IdVehiculo);
+            return View(siniestro);
         }
 
-        // GET: ItemMenus/Edit/5
+        // GET: Siniestroes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +77,23 @@ namespace Servicio.Controllers.mvc
                 return NotFound();
             }
 
-            var itemMenu = await _context.ItemMenu.SingleOrDefaultAsync(m => m.IdSubMenu == id);
-            if (itemMenu == null)
+            var siniestro = await _context.Siniestro.SingleOrDefaultAsync(m => m.IdSiniestro == id);
+            if (siniestro == null)
             {
                 return NotFound();
             }
-            ViewData["IdMenu"] = new SelectList(_context.Menu, "IdMenu", "Titulo", itemMenu.IdMenu);
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion", itemMenu.IdPerfil);
-            return View(itemMenu);
+            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculo, "IdVehiculo", "IdVehiculo", siniestro.IdVehiculo);
+            return View(siniestro);
         }
 
-        // POST: ItemMenus/Edit/5
+        // POST: Siniestroes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdSubMenu,IdPerfil,IdMenu,Estado")] ItemMenu itemMenu)
+        public async Task<IActionResult> Edit(int id, [Bind("IdSiniestro,Fecha,CallePrincipal,CalleSecundaria,Referencia,IdVehiculo")] Siniestro siniestro)
         {
-            if (id != itemMenu.IdSubMenu)
+            if (id != siniestro.IdSiniestro)
             {
                 return NotFound();
             }
@@ -106,12 +102,12 @@ namespace Servicio.Controllers.mvc
             {
                 try
                 {
-                    _context.Update(itemMenu);
+                    _context.Update(siniestro);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ItemMenuExists(itemMenu.IdSubMenu))
+                    if (!SiniestroExists(siniestro.IdSiniestro))
                     {
                         return NotFound();
                     }
@@ -122,12 +118,11 @@ namespace Servicio.Controllers.mvc
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdMenu"] = new SelectList(_context.Menu, "IdMenu", "Titulo", itemMenu.IdMenu);
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion", itemMenu.IdPerfil);
-            return View(itemMenu);
+            ViewData["IdVehiculo"] = new SelectList(_context.Vehiculo, "IdVehiculo", "IdVehiculo", siniestro.IdVehiculo);
+            return View(siniestro);
         }
 
-        // GET: ItemMenus/Delete/5
+        // GET: Siniestroes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +130,31 @@ namespace Servicio.Controllers.mvc
                 return NotFound();
             }
 
-            var itemMenu = await _context.ItemMenu
-                .Include(i => i.IdMenuNavigation)
-                .Include(i => i.IdPerfilNavigation)
-                .SingleOrDefaultAsync(m => m.IdSubMenu == id);
-            if (itemMenu == null)
+            var siniestro = await _context.Siniestro
+                .Include(s => s.IdVehiculoNavigation)
+                .SingleOrDefaultAsync(m => m.IdSiniestro == id);
+            if (siniestro == null)
             {
                 return NotFound();
             }
 
-            return View(itemMenu);
+            return View(siniestro);
         }
 
-        // POST: ItemMenus/Delete/5
+        // POST: Siniestroes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var itemMenu = await _context.ItemMenu.SingleOrDefaultAsync(m => m.IdSubMenu == id);
-            _context.ItemMenu.Remove(itemMenu);
+            var siniestro = await _context.Siniestro.SingleOrDefaultAsync(m => m.IdSiniestro == id);
+            _context.Siniestro.Remove(siniestro);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ItemMenuExists(int id)
+        private bool SiniestroExists(int id)
         {
-            return _context.ItemMenu.Any(e => e.IdSubMenu == id);
+            return _context.Siniestro.Any(e => e.IdSiniestro == id);
         }
     }
 }

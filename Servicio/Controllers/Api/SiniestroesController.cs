@@ -12,27 +12,27 @@ using Entidades.Utils;
 namespace Servicio.Controllers.Api
 {
     [Produces("application/json")]
-    [Route("api/Menus")]
-    public class MenusController : Controller
+    [Route("api/Siniestroes")]
+    public class SiniestroesController : Controller
     {
         private readonly SegurosContext _context;
 
-        public MenusController(SegurosContext context)
+        public SiniestroesController(SegurosContext context)
         {
             _context = context;
         }
 
-        // GET: api/Generoes
+        // GET: api/Siniestroes
         [HttpGet]
-        [Route("ListarMenus")]
-        public IEnumerable<Menu> GetMenu()
+        [Route("ListarSiniestro")]
+        public IEnumerable<Siniestro> GetSiniestro()
         {
-            return _context.Menu;
+            return _context.Siniestro;
         }
 
-        // GET: api/Generoes/5
+        // GET: api/Siniestroes/5
         [HttpGet("{id}")]
-        public async Task<Response> GetMenu([FromRoute] int id)
+        public async Task<Response> GetSiniestro([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -43,9 +43,9 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            var menu = await _context.Menu.SingleOrDefaultAsync(m => m.IdMenu == id);
+            var siniestro = await _context.Siniestro.SingleOrDefaultAsync(m => m.IdSiniestro == id);
 
-            if (menu == null)
+            if (siniestro == null)
             {
                 return new Response
                 {
@@ -57,13 +57,13 @@ namespace Servicio.Controllers.Api
             {
                 IsSuccess = true,
                 Message = Mensaje.Satisfactorio,
-                Resultado = menu
+                Resultado = siniestro
             };
         }
 
-        // PUT: api/Menus/5
+        // PUT: api/Generoes/5
         [HttpPut("{id}")]
-        public async Task<Response> PutMenu([FromRoute] int id, [FromBody] Menu menu)
+        public async Task<Response> PutGenero([FromRoute] int id, [FromBody] Siniestro siniestro)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            if (id != menu.IdMenu)
+            if (id != siniestro.IdSiniestro)
             {
                 return new Response
                 {
@@ -83,7 +83,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            _context.Entry(menu).State = EntityState.Modified;
+            _context.Entry(siniestro).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return new Response
             {
@@ -94,10 +94,10 @@ namespace Servicio.Controllers.Api
 
         }
 
-        // POST: api/Menus
+        // POST: api/Generoes
         [HttpPost]
-        [Route("InsertarMenus")]
-        public async Task<Response> InsertarMenus([FromBody] Menu menu)
+        [Route("InsertarSiniestro")]
+        public async Task<Response> InsertarSiniestro([FromBody] Siniestro siniestro)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace Servicio.Controllers.Api
                     };
                 }
 
-                _context.Menu.Add(menu);
+                _context.Siniestro.Add(siniestro);
                 await _context.SaveChangesAsync();
                 return new Response
                 {
@@ -129,9 +129,9 @@ namespace Servicio.Controllers.Api
             }
         }
 
-        // DELETE: api/Menus/5
+        // DELETE: api/Generoes/5
         [HttpDelete("{id}")]
-        public async Task<Response> DeleteMenu([FromRoute] int id)
+        public async Task<Response> DeleteSiniestro([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -142,8 +142,8 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            var menu = await _context.Menu.SingleOrDefaultAsync(m => m.IdMenu == id);
-            if (menu == null)
+            var siniestro = await _context.Siniestro.SingleOrDefaultAsync(m => m.IdSiniestro == id);
+            if (siniestro == null)
             {
                 return new Response
                 {
@@ -152,7 +152,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            _context.Menu.Remove(menu);
+            _context.Siniestro.Remove(siniestro);
             await _context.SaveChangesAsync();
             return new Response
             {
@@ -161,9 +161,9 @@ namespace Servicio.Controllers.Api
             };
         }
 
-        private bool MenuExists(int id)
+        private bool SiniestroExists(int id)
         {
-            return _context.Menu.Any(e => e.IdMenu == id);
+            return _context.Siniestro.Any(e => e.IdSiniestro == id);
         }
     }
 }

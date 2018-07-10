@@ -12,27 +12,27 @@ using Entidades.Utils;
 namespace Servicio.Controllers.Api
 {
     [Produces("application/json")]
-    [Route("api/Menus")]
-    public class MenusController : Controller
+    [Route("api/Perfils")]
+    public class PerfilsController : Controller
     {
         private readonly SegurosContext _context;
 
-        public MenusController(SegurosContext context)
+        public PerfilsController(SegurosContext context)
         {
             _context = context;
         }
 
-        // GET: api/Generoes
+        // GET: api/Perfils
         [HttpGet]
-        [Route("ListarMenus")]
-        public IEnumerable<Menu> GetMenu()
+        [Route("ListarPerfil")]
+        public IEnumerable<Perfil> GetPerfil()
         {
-            return _context.Menu;
+            return _context.Perfil;
         }
 
-        // GET: api/Generoes/5
+        // GET: api/Perfils/5
         [HttpGet("{id}")]
-        public async Task<Response> GetMenu([FromRoute] int id)
+        public async Task<Response> GetPerfil([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -43,9 +43,9 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            var menu = await _context.Menu.SingleOrDefaultAsync(m => m.IdMenu == id);
+            var perfil = await _context.Perfil.SingleOrDefaultAsync(m => m.IdPerfil == id);
 
-            if (menu == null)
+            if (perfil == null)
             {
                 return new Response
                 {
@@ -57,13 +57,13 @@ namespace Servicio.Controllers.Api
             {
                 IsSuccess = true,
                 Message = Mensaje.Satisfactorio,
-                Resultado = menu
+                Resultado = perfil
             };
         }
 
-        // PUT: api/Menus/5
+        // PUT: api/Perfil/5
         [HttpPut("{id}")]
-        public async Task<Response> PutMenu([FromRoute] int id, [FromBody] Menu menu)
+        public async Task<Response> PutPerfil([FromRoute] int id, [FromBody] Perfil perfil)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            if (id != menu.IdMenu)
+            if (id != perfil.IdPerfil)
             {
                 return new Response
                 {
@@ -83,7 +83,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            _context.Entry(menu).State = EntityState.Modified;
+            _context.Entry(perfil).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return new Response
             {
@@ -94,10 +94,10 @@ namespace Servicio.Controllers.Api
 
         }
 
-        // POST: api/Menus
+        // POST: api/Generoes
         [HttpPost]
-        [Route("InsertarMenus")]
-        public async Task<Response> InsertarMenus([FromBody] Menu menu)
+        [Route("InsertarPerfil")]
+        public async Task<Response> InsertarPerfil([FromBody] Perfil perfil)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace Servicio.Controllers.Api
                     };
                 }
 
-                _context.Menu.Add(menu);
+                _context.Perfil.Add(perfil);
                 await _context.SaveChangesAsync();
                 return new Response
                 {
@@ -129,9 +129,9 @@ namespace Servicio.Controllers.Api
             }
         }
 
-        // DELETE: api/Menus/5
+        // DELETE: api/Perfils/5
         [HttpDelete("{id}")]
-        public async Task<Response> DeleteMenu([FromRoute] int id)
+        public async Task<Response> DeletePerfil([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -142,8 +142,8 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            var menu = await _context.Menu.SingleOrDefaultAsync(m => m.IdMenu == id);
-            if (menu == null)
+            var perfil = await _context.Perfil.SingleOrDefaultAsync(m => m.IdPerfil == id);
+            if (perfil == null)
             {
                 return new Response
                 {
@@ -152,7 +152,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            _context.Menu.Remove(menu);
+            _context.Perfil.Remove(perfil);
             await _context.SaveChangesAsync();
             return new Response
             {
@@ -161,9 +161,9 @@ namespace Servicio.Controllers.Api
             };
         }
 
-        private bool MenuExists(int id)
+        private bool PerfilExists(int id)
         {
-            return _context.Menu.Any(e => e.IdMenu == id);
+            return _context.Perfil.Any(e => e.IdPerfil == id);
         }
     }
 }

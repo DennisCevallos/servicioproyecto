@@ -10,23 +10,23 @@ using Entidades.Negocio;
 
 namespace Servicio.Controllers.mvc
 {
-    public class ItemMenusController : Controller
+    public class PolizasController : Controller
     {
         private readonly SegurosContext _context;
 
-        public ItemMenusController(SegurosContext context)
+        public PolizasController(SegurosContext context)
         {
             _context = context;
         }
 
-        // GET: ItemMenus
+        // GET: Polizas
         public async Task<IActionResult> Index()
         {
-            var segurosContext = _context.ItemMenu.Include(i => i.IdMenuNavigation).Include(i => i.IdPerfilNavigation);
+            var segurosContext = _context.Poliza.Include(p => p.IdPersonaNavigation);
             return View(await segurosContext.ToListAsync());
         }
 
-        // GET: ItemMenus/Details/5
+        // GET: Polizas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +34,42 @@ namespace Servicio.Controllers.mvc
                 return NotFound();
             }
 
-            var itemMenu = await _context.ItemMenu
-                .Include(i => i.IdMenuNavigation)
-                .Include(i => i.IdPerfilNavigation)
-                .SingleOrDefaultAsync(m => m.IdSubMenu == id);
-            if (itemMenu == null)
+            var poliza = await _context.Poliza
+                .Include(p => p.IdPersonaNavigation)
+                .SingleOrDefaultAsync(m => m.IdPoliza == id);
+            if (poliza == null)
             {
                 return NotFound();
             }
 
-            return View(itemMenu);
+            return View(poliza);
         }
 
-        // GET: ItemMenus/Create
+        // GET: Polizas/Create
         public IActionResult Create()
         {
-            ViewData["IdMenu"] = new SelectList(_context.Menu, "IdMenu", "IdMenu");
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "IdPerfil");
+            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "IdPersona");
             return View();
         }
 
-        // POST: ItemMenus/Create
+        // POST: Polizas/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdSubMenu,IdPerfil,IdMenu,Estado")] ItemMenu itemMenu)
+        public async Task<IActionResult> Create([Bind("IdPoliza,FechaCoverturaI,FechaCoverturaF,NumPoliza,Factura,TotValAsegurado,TotValPrima,IdPersona")] Poliza poliza)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(itemMenu);
+                _context.Add(poliza);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdMenu"] = new SelectList(_context.Menu, "IdMenu", "Titulo", itemMenu.IdMenu);
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion", itemMenu.IdPerfil);
-            return View(itemMenu);
+            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "IdPersona", poliza.IdPersona);
+            return View(poliza);
         }
 
-        // GET: ItemMenus/Edit/5
+        // GET: Polizas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +77,23 @@ namespace Servicio.Controllers.mvc
                 return NotFound();
             }
 
-            var itemMenu = await _context.ItemMenu.SingleOrDefaultAsync(m => m.IdSubMenu == id);
-            if (itemMenu == null)
+            var poliza = await _context.Poliza.SingleOrDefaultAsync(m => m.IdPoliza == id);
+            if (poliza == null)
             {
                 return NotFound();
             }
-            ViewData["IdMenu"] = new SelectList(_context.Menu, "IdMenu", "Titulo", itemMenu.IdMenu);
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion", itemMenu.IdPerfil);
-            return View(itemMenu);
+            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "IdPersona", poliza.IdPersona);
+            return View(poliza);
         }
 
-        // POST: ItemMenus/Edit/5
+        // POST: Polizas/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdSubMenu,IdPerfil,IdMenu,Estado")] ItemMenu itemMenu)
+        public async Task<IActionResult> Edit(int id, [Bind("IdPoliza,FechaCoverturaI,FechaCoverturaF,NumPoliza,Factura,TotValAsegurado,TotValPrima,IdPersona")] Poliza poliza)
         {
-            if (id != itemMenu.IdSubMenu)
+            if (id != poliza.IdPoliza)
             {
                 return NotFound();
             }
@@ -106,12 +102,12 @@ namespace Servicio.Controllers.mvc
             {
                 try
                 {
-                    _context.Update(itemMenu);
+                    _context.Update(poliza);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ItemMenuExists(itemMenu.IdSubMenu))
+                    if (!PolizaExists(poliza.IdPoliza))
                     {
                         return NotFound();
                     }
@@ -122,12 +118,11 @@ namespace Servicio.Controllers.mvc
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdMenu"] = new SelectList(_context.Menu, "IdMenu", "Titulo", itemMenu.IdMenu);
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion", itemMenu.IdPerfil);
-            return View(itemMenu);
+            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "IdPersona", poliza.IdPersona);
+            return View(poliza);
         }
 
-        // GET: ItemMenus/Delete/5
+        // GET: Polizas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +130,31 @@ namespace Servicio.Controllers.mvc
                 return NotFound();
             }
 
-            var itemMenu = await _context.ItemMenu
-                .Include(i => i.IdMenuNavigation)
-                .Include(i => i.IdPerfilNavigation)
-                .SingleOrDefaultAsync(m => m.IdSubMenu == id);
-            if (itemMenu == null)
+            var poliza = await _context.Poliza
+                .Include(p => p.IdPersonaNavigation)
+                .SingleOrDefaultAsync(m => m.IdPoliza == id);
+            if (poliza == null)
             {
                 return NotFound();
             }
 
-            return View(itemMenu);
+            return View(poliza);
         }
 
-        // POST: ItemMenus/Delete/5
+        // POST: Polizas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var itemMenu = await _context.ItemMenu.SingleOrDefaultAsync(m => m.IdSubMenu == id);
-            _context.ItemMenu.Remove(itemMenu);
+            var poliza = await _context.Poliza.SingleOrDefaultAsync(m => m.IdPoliza == id);
+            _context.Poliza.Remove(poliza);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ItemMenuExists(int id)
+        private bool PolizaExists(int id)
         {
-            return _context.ItemMenu.Any(e => e.IdSubMenu == id);
+            return _context.Poliza.Any(e => e.IdPoliza == id);
         }
     }
 }
