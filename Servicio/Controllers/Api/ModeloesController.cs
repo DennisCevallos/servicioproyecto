@@ -12,27 +12,27 @@ using Entidades.Utils;
 namespace Servicio.Controllers.Api
 {
     [Produces("application/json")]
-    [Route("api/Menus")]
-    public class MenusController : Controller
+    [Route("api/Modeloes")]
+    public class ModeloesController : Controller
     {
         private readonly SegurosContext _context;
 
-        public MenusController(SegurosContext context)
+        public ModeloesController(SegurosContext context)
         {
             _context = context;
         }
 
-        // GET: api/Generoes
+        // GET: api/Modeloes
         [HttpGet]
-        [Route("ListarMenus")]
-        public IEnumerable<Menu> GetMenu()
+        [Route("ListarModelo")]
+        public IEnumerable<Modelo> GetModelo()
         {
-            return _context.Menu;
+            return _context.Modelo;
         }
 
-        // GET: api/Generoes/5
+        // GET: api/Modeloes/5
         [HttpGet("{id}")]
-        public async Task<Response> GetMenu([FromRoute] int id)
+        public async Task<Response> GetModelo([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -43,9 +43,9 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            var menu = await _context.Menu.SingleOrDefaultAsync(m => m.IdMenu == id);
+            var modelo = await _context.Modelo.SingleOrDefaultAsync(m => m.IdModelo == id);
 
-            if (menu == null)
+            if (modelo == null)
             {
                 return new Response
                 {
@@ -57,13 +57,13 @@ namespace Servicio.Controllers.Api
             {
                 IsSuccess = true,
                 Message = Mensaje.Satisfactorio,
-                Resultado = menu
+                Resultado = modelo
             };
         }
 
-        // PUT: api/Menus/5
+        // PUT: api/Modeloes/5
         [HttpPut("{id}")]
-        public async Task<Response> PutMenu([FromRoute] int id, [FromBody] Menu menu)
+        public async Task<Response> PutModelo([FromRoute] int id, [FromBody] Modelo modelo)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            if (id != menu.IdMenu)
+            if (id != modelo.IdModelo)
             {
                 return new Response
                 {
@@ -83,7 +83,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            _context.Entry(menu).State = EntityState.Modified;
+            _context.Entry(modelo).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return new Response
             {
@@ -94,10 +94,10 @@ namespace Servicio.Controllers.Api
 
         }
 
-        // POST: api/Menus
+        // POST: api/Modeloes
         [HttpPost]
-        [Route("InsertarMenus")]
-        public async Task<Response> InsertarMenus([FromBody] Menu menu)
+        [Route("InsertarModelo")]
+        public async Task<Response> InsertarModelo([FromBody] Modelo modelo)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace Servicio.Controllers.Api
                     };
                 }
 
-                _context.Menu.Add(menu);
+                _context.Modelo.Add(modelo);
                 await _context.SaveChangesAsync();
                 return new Response
                 {
@@ -129,9 +129,9 @@ namespace Servicio.Controllers.Api
             }
         }
 
-        // DELETE: api/Menus/5
+        // DELETE: api/Modeloes/5
         [HttpDelete("{id}")]
-        public async Task<Response> DeleteMenu([FromRoute] int id)
+        public async Task<Response> DeleteModelo([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -142,8 +142,8 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            var menu = await _context.Menu.SingleOrDefaultAsync(m => m.IdMenu == id);
-            if (menu == null)
+            var modelo = await _context.Modelo.SingleOrDefaultAsync(m => m.IdModelo == id);
+            if (modelo == null)
             {
                 return new Response
                 {
@@ -152,7 +152,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            _context.Menu.Remove(menu);
+            _context.Modelo.Remove(modelo);
             await _context.SaveChangesAsync();
             return new Response
             {
@@ -161,9 +161,9 @@ namespace Servicio.Controllers.Api
             };
         }
 
-        private bool MenuExists(int id)
+        private bool ModeloExists(int id)
         {
-            return _context.Menu.Any(e => e.IdMenu == id);
+            return _context.Modelo.Any(e => e.IdModelo == id);
         }
     }
 }

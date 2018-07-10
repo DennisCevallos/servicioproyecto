@@ -49,8 +49,8 @@ namespace Servicio.Controllers.mvc
         // GET: Logins/Create
         public IActionResult Create()
         {
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "IdPerfil");
-            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "IdPersona");
+            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion");
+            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "Nombres");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace Servicio.Controllers.mvc
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "IdPerfil", login.IdPerfil);
-            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "IdPersona", login.IdPersona);
+            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion", login.IdPerfil);
+            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "Nombres", login.IdPersona);
             return View(login);
         }
 
@@ -85,8 +85,8 @@ namespace Servicio.Controllers.mvc
             {
                 return NotFound();
             }
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "IdPerfil", login.IdPerfil);
-            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "IdPersona", login.IdPersona);
+            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion", login.IdPerfil);
+            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "Nombres", login.IdPersona);
             return View(login);
         }
 
@@ -122,8 +122,8 @@ namespace Servicio.Controllers.mvc
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "IdPerfil", login.IdPerfil);
-            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "IdPersona", login.IdPersona);
+            ViewData["IdPerfil"] = new SelectList(_context.Perfil, "IdPerfil", "Descripcion", login.IdPerfil);
+            ViewData["IdPersona"] = new SelectList(_context.Persona, "IdPersona", "Nombres", login.IdPersona);
             return View(login);
         }
 

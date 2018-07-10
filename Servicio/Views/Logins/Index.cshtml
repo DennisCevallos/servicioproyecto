@@ -12,23 +12,26 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FechaCambio)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Clave)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Usuario)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Estado)
-                </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdPerfilNavigation)
+                @Html.DisplayNameFor(model => model.FechaCambio)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdPersonaNavigation)
+                @Html.DisplayNameFor(model => model.Clave)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                Perfil
+            </th>
+            <th>
+                Nombre
+            </th>
+            <th>
+               Apellido
             </th>
             <th></th>
         </tr>
@@ -49,14 +52,16 @@
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdPerfilNavigation.IdPerfil)
+                @Html.DisplayFor(modelItem => item.IdPerfilNavigation.Descripcion)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdPersonaNavigation.IdPersona)
+                @Html.DisplayFor(modelItem => item.IdPersonaNavigation.Nombres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPersonaNavigation.Apellido)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdLogin">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdLogin">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.IdLogin">Delete</a>
             </td>
         </tr>

@@ -12,27 +12,25 @@ using Entidades.Utils;
 namespace Servicio.Controllers.Api
 {
     [Produces("application/json")]
-    [Route("api/Menus")]
-    public class MenusController : Controller
+    [Route("api/TipoVehiculoes")]
+    public class TipoVehiculoesController : Controller
     {
         private readonly SegurosContext _context;
 
-        public MenusController(SegurosContext context)
+        public TipoVehiculoesController(SegurosContext context)
         {
             _context = context;
         }
 
-        // GET: api/Generoes
         [HttpGet]
-        [Route("ListarMenus")]
-        public IEnumerable<Menu> GetMenu()
+        [Route("ListarTipoVehiculo")]
+        public IEnumerable<TipoVehiculo> GetTipoVehiculo()
         {
-            return _context.Menu;
+            return _context.TipoVehiculo;
         }
 
-        // GET: api/Generoes/5
         [HttpGet("{id}")]
-        public async Task<Response> GetMenu([FromRoute] int id)
+        public async Task<Response> GetTipoVehiculo([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -43,9 +41,9 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            var menu = await _context.Menu.SingleOrDefaultAsync(m => m.IdMenu == id);
+            var tipoVehiculo = await _context.TipoVehiculo.SingleOrDefaultAsync(m => m.IdTipoVehiculo == id);
 
-            if (menu == null)
+            if (tipoVehiculo == null)
             {
                 return new Response
                 {
@@ -57,13 +55,12 @@ namespace Servicio.Controllers.Api
             {
                 IsSuccess = true,
                 Message = Mensaje.Satisfactorio,
-                Resultado = menu
+                Resultado = tipoVehiculo
             };
         }
 
-        // PUT: api/Menus/5
         [HttpPut("{id}")]
-        public async Task<Response> PutMenu([FromRoute] int id, [FromBody] Menu menu)
+        public async Task<Response> PutTipoVehiculo([FromRoute] int id, [FromBody] TipoVehiculo tipoVehiculo)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +71,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            if (id != menu.IdMenu)
+            if (id != tipoVehiculo.IdTipoVehiculo)
             {
                 return new Response
                 {
@@ -83,7 +80,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            _context.Entry(menu).State = EntityState.Modified;
+            _context.Entry(tipoVehiculo).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return new Response
             {
@@ -94,10 +91,9 @@ namespace Servicio.Controllers.Api
 
         }
 
-        // POST: api/Menus
         [HttpPost]
-        [Route("InsertarMenus")]
-        public async Task<Response> InsertarMenus([FromBody] Menu menu)
+        [Route("InsertarTipoVehiculo")]
+        public async Task<Response> InsertarTipoVehiculo([FromBody] TipoVehiculo tipoVehiculo)
         {
             try
             {
@@ -110,7 +106,7 @@ namespace Servicio.Controllers.Api
                     };
                 }
 
-                _context.Menu.Add(menu);
+                _context.TipoVehiculo.Add(tipoVehiculo);
                 await _context.SaveChangesAsync();
                 return new Response
                 {
@@ -129,9 +125,8 @@ namespace Servicio.Controllers.Api
             }
         }
 
-        // DELETE: api/Menus/5
         [HttpDelete("{id}")]
-        public async Task<Response> DeleteMenu([FromRoute] int id)
+        public async Task<Response> DeleteTipoVehiculo([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -142,8 +137,8 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            var menu = await _context.Menu.SingleOrDefaultAsync(m => m.IdMenu == id);
-            if (menu == null)
+            var tipoVehiculo = await _context.TipoVehiculo.SingleOrDefaultAsync(m => m.IdTipoVehiculo == id);
+            if (tipoVehiculo == null)
             {
                 return new Response
                 {
@@ -152,7 +147,7 @@ namespace Servicio.Controllers.Api
                 };
             }
 
-            _context.Menu.Remove(menu);
+            _context.TipoVehiculo.Remove(tipoVehiculo);
             await _context.SaveChangesAsync();
             return new Response
             {
@@ -161,9 +156,9 @@ namespace Servicio.Controllers.Api
             };
         }
 
-        private bool MenuExists(int id)
+        private bool TipoVehiculoExists(int id)
         {
-            return _context.Menu.Any(e => e.IdMenu == id);
+            return _context.TipoVehiculo.Any(e => e.IdTipoVehiculo == id);
         }
     }
 }
