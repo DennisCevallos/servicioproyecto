@@ -22,15 +22,13 @@ namespace Servicio.Controllers.Api
             _context = context;
         }
 
-        // GET: api/Marcas
-        [Route("ListarMarcas")]
         [HttpGet]
+        [Route("ListarMarcas")]
         public IEnumerable<Marca> GetMarca()
         {
             return _context.Marca;
         }
 
-        // GET: api/Marcas/5
         [HttpGet("{id}")]
         public async Task<Response> GetMarca([FromRoute] int id)
         {
@@ -52,7 +50,7 @@ namespace Servicio.Controllers.Api
             };
         }
 
-        // PUT: api/Marcas/5
+        // PUT: api/Colors/5
         [HttpPut("{id}")]
         public async Task<Response> PutMarca([FromRoute] int id, [FromBody] Marca marca)
         {
@@ -83,9 +81,10 @@ namespace Servicio.Controllers.Api
                 Message = Mensaje.Error
             };
         }
-        // POST: api/Marcas
-        [Route("InsertarMarca")]
+
+        // POST: api/Colors
         [HttpPost]
+        [Route("InsertarMarca")]
         public async Task<Response> PostMarca([FromBody] Marca marca)
         {
             try
@@ -115,7 +114,7 @@ namespace Servicio.Controllers.Api
                 };
             }
         }
-        // DELETE: api/Marcas/5
+        // DELETE: api/Colors/5
         [HttpDelete("{id}")]
         public async Task<Response> DeleteMarca([FromRoute] int id)
         {
@@ -140,25 +139,27 @@ namespace Servicio.Controllers.Api
                 }
                 _context.Marca.Remove(respuesta);
                 await _context.SaveChangesAsync();
+
                 return new Response
                 {
                     IsSuccess = true,
-                    Message = Mensaje.Satisfactorio,
+                    Message = Mensaje.Satisfactorio
                 };
+
             }
             catch (Exception ex)
             {
                 return new Response
                 {
                     IsSuccess = false,
-                    Message = Mensaje.Error,
+                    Message = Mensaje.Error
                 };
             }
         }
+
         private bool MarcaExists(int id)
         {
             return _context.Marca.Any(e => e.IdMarca == id);
         }
     }
 }
-

@@ -19,14 +19,14 @@ namespace Servicio.Controllers.mvc
             _context = context;
         }
 
-        // GET: Seguroes
+        // GET: Seguros
         public async Task<IActionResult> Index()
         {
             var segurosContext = _context.Seguro.Include(s => s.IdPolizaNavigation).Include(s => s.IdVehiculoNavigation);
             return View(await segurosContext.ToListAsync());
         }
 
-        // GET: Seguroes/Details/5
+        // GET: Seguros/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,7 +46,7 @@ namespace Servicio.Controllers.mvc
             return View(seguro);
         }
 
-        // GET: Seguroes/Create
+        // GET: Seguros/Create
         public IActionResult Create()
         {
             ViewData["IdPoliza"] = new SelectList(_context.Poliza, "IdPoliza", "IdPoliza");
@@ -54,7 +54,7 @@ namespace Servicio.Controllers.mvc
             return View();
         }
 
-        // POST: Seguroes/Create
+        // POST: Seguros/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -72,7 +72,7 @@ namespace Servicio.Controllers.mvc
             return View(seguro);
         }
 
-        // GET: Seguroes/Edit/5
+        // GET: Seguros/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,7 +90,7 @@ namespace Servicio.Controllers.mvc
             return View(seguro);
         }
 
-        // POST: Seguroes/Edit/5
+        // POST: Seguros/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -127,7 +127,7 @@ namespace Servicio.Controllers.mvc
             return View(seguro);
         }
 
-        // GET: Seguroes/Delete/5
+        // GET: Seguros/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,7 +147,7 @@ namespace Servicio.Controllers.mvc
             return View(seguro);
         }
 
-        // POST: Seguroes/Delete/5
+        // POST: Seguros/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

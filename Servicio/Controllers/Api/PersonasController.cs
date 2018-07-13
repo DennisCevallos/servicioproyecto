@@ -75,7 +75,7 @@ namespace Servicio.Controllers.Api
                 modificar.Telefono = persona.Telefono;
                 modificar.Celular = persona.Celular;
                 modificar.Estado = persona.Estado;
-              //  modificar.IdGenero = persona.IdGenero;
+                modificar.IdGenero = persona.IdGenero;
                 _context.Persona.Update(modificar);
                 await _context.SaveChangesAsync();
                 return new Response
