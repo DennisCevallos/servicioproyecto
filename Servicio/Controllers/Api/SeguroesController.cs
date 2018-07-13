@@ -22,37 +22,46 @@ namespace Servicio.Controllers.Api
             _context = context;
         }
 
-        // GET: api/Seguroes
-        [Route("ListarSeguroes")]
+        // GET: api/Generoes
         [HttpGet]
+        [Route("ListarSeguros")]
         public IEnumerable<Seguro> GetSeguro()
         {
             return _context.Seguro;
         }
 
-        // GET: api/Seguroes/5
+        // GET: api/Generoes/5
         [HttpGet("{id}")]
         public async Task<Response> GetSeguro([FromRoute] int id)
         {
-            var seguro = await _context.Seguro.SingleOrDefaultAsync(m => m.IdSeguro == id);
-
-            if (seguro != null)
+            if (!ModelState.IsValid)
             {
                 return new Response
                 {
-                    IsSuccess = true,
-                    Message = Mensaje.Satisfactorio,
-                    Resultado = seguro
+                    IsSuccess = false,
+                    Message = Mensaje.ModeloInvalido
+                };
+            }
+
+            var seguro = await _context.Seguro.SingleOrDefaultAsync(m => m.IdSeguro == id);
+
+            if (seguro == null)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = Mensaje.Error
                 };
             }
             return new Response
             {
-                IsSuccess = false,
-                Message = Mensaje.ModeloInvalido
+                IsSuccess = true,
+                Message = Mensaje.Satisfactorio,
+                Resultado = seguro
             };
         }
 
-        // PUT: api/Seguroes/5
+        // PUT: api/Generoes/5
         [HttpPut("{id}")]
         public async Task<Response> PutSeguro([FromRoute] int id, [FromBody] Seguro seguro)
         {
@@ -64,31 +73,31 @@ namespace Servicio.Controllers.Api
                     Message = Mensaje.ModeloInvalido
                 };
             }
-            var modificar = await _context.Seguro.Where(x => x.IdSeguro == id).FirstOrDefaultAsync();
-            if(modificar !=null)
+
+            if (id != seguro.IdSeguro)
             {
-                modificar.ValAsegurado = seguro.ValAsegurado;
-                modificar.Tasa = seguro.Tasa;
-                modificar.PrimaSeguro = seguro.PrimaSeguro;
-                _context.Seguro.Update(modificar);
-                await _context.SaveChangesAsync();
                 return new Response
                 {
-                    IsSuccess = true,
-                    Message = Mensaje.Satisfactorio
+                    IsSuccess = false,
+                    Message = Mensaje.Error
                 };
             }
+
+            _context.Entry(seguro).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
             return new Response
             {
-                IsSuccess = false,
-                Message = Mensaje.Error
+                IsSuccess = true,
+                Message = Mensaje.RegistroEditado
             };
+
+
         }
 
-        // POST: api/Seguroes
-        [Route("InsertarSeguroes")]
+        // POST: api/Generoes
         [HttpPost]
-        public async Task<Response> PostSeguro([FromBody] Seguro seguro)
+        [Route("InsertarSeguros")]
+        public async Task<Response> InsertarSeguro([FromBody] Seguro seguro)
         {
             try
             {
@@ -100,6 +109,7 @@ namespace Servicio.Controllers.Api
                         Message = Mensaje.ModeloInvalido
                     };
                 }
+
                 _context.Seguro.Add(seguro);
                 await _context.SaveChangesAsync();
                 return new Response
@@ -107,8 +117,9 @@ namespace Servicio.Controllers.Api
                     IsSuccess = true,
                     Message = Mensaje.Satisfactorio
                 };
+
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new Response
                 {
@@ -118,52 +129,41 @@ namespace Servicio.Controllers.Api
             }
         }
 
-        // DELETE: api/Seguroes/5
+        // DELETE: api/Generoes/5
         [HttpDelete("{id}")]
-        
         public async Task<Response> DeleteSeguro([FromRoute] int id)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return new Response
-                    {
-                        IsSuccess = false,
-                        Message = Mensaje.ModeloInvalido
-                    };
-
-                }
-                var respuesta = await _context.Seguro.SingleOrDefaultAsync(m => m.IdSeguro == id);
-                if (respuesta == null)
-                {
-                    return new Response
-                    {
-                        IsSuccess = false,
-                        Message = Mensaje.RegistroNoEncontrado,
-                    };
-                }
-                _context.Seguro.Remove(respuesta);
-                await _context.SaveChangesAsync();
-                return new Response
-                {
-                    IsSuccess = true,
-                    Message = Mensaje.Satisfactorio,
-                };
-            }
-            catch (Exception ex)
+            if (!ModelState.IsValid)
             {
                 return new Response
                 {
                     IsSuccess = false,
-                    Message = Mensaje.Error,
+                    Message = Mensaje.ModeloInvalido
                 };
             }
+
+            var respuesta = await _context.Seguro.SingleOrDefaultAsync(m => m.IdSeguro == id);
+            if (respuesta == null)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = Mensaje.Error
+                };
+            }
+
+            _context.Seguro.Remove(respuesta);
+            await _context.SaveChangesAsync();
+            return new Response
+            {
+                IsSuccess = true,
+                Message = Mensaje.Satisfactorio
+            };
         }
+
         private bool SeguroExists(int id)
         {
             return _context.Seguro.Any(e => e.IdSeguro == id);
         }
     }
 }
-
